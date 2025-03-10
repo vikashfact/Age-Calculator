@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Age Calculator</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #87CEEB; /* Sky blue background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: #333;
+    }
+
+    .container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: #555;
+    }
+
+    input[type="date"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    button {
+      background: #ff6f61;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-top: 1rem;
+    }
+
+    button:hover {
+      background: #ff3b2f;
+    }
+
+    .result {
+      margin-top: 1.5rem;
+      font-size: 1.2rem;
+      color: #333;
+      text-align: left;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      text-align: center;
+    }
+
+    th {
+      background-color: #008080; /* Teal color for table header */
+      color: #fff;
+    }
+
+    td {
+      background-color: #E0FFFF; /* Light teal color for table cells */
+      color: #333;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 480px) {
+      .container {
+        padding: 1.5rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      input[type="date"] {
+        padding: 0.5rem;
+      }
+
+      button {
+        padding: 0.5rem 1rem;
+      }
+
+      th, td {
+        padding: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Age Calculator</h1>
+    <div class="input-group">
+      <label for="date1">Date of Birth:</label>
+      <input type="date" id="date1" name="date1">
+    </div>
+    <div class="input-group">
+      <label for="date2">Age at the Date of:</label>
+      <input type="date" id="date2" name="date2">
+    </div>
+    <button id="calculateBtn">Calculate</button>
+    <div id="result" class="result">
+      <p>Result:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Years</th>
+            <th>Months</th>
+            <th>Days</th>
+            <th>Hours</th>
+            <th>Minutes</th>
+            <th>Seconds</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="years">0</td>
+            <td id="months">0</td>
+            <td id="days">0</td>
+            <td id="hours">0</td>
+            <td id="minutes">0</td>
+            <td id="seconds">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript for Date Difference Calculation
+    document.getElementById('calculateBtn').addEventListener('click', function () {
+      const date1 = document.getElementById('date1').value;
+      const date2 = document.getElementById('date2').value;
+
+      if (!date1 || !date2) {
+        alert('Please select both dates.');
+        return;
+      }
+
+      const startDate = new Date(date1);
+      const endDate = new Date(date2);
+
+      if (startDate > endDate) {
+        alert('The first date must be earlier than the second date.');
+        return;
+      }
+
+      // Calculate the difference in milliseconds
+      let diffInMs = endDate - startDate;
+
+      // Convert milliseconds to years, months, days, hours, minutes, and seconds
+      const msInSecond = 1000;
+      const msInMinute = msInSecond * 60;
+      const msInHour = msInMinute * 60;
+      const msInDay = msInHour * 24;
+      const msInMonth = msInDay * 30.436875; // Average days in a month
+      const msInYear = msInDay * 365.25; // Account for leap years
+
+      const years = Math.floor(diffInMs / msInYear);
+      diffInMs %= msInYear;
+
+      const months = Math.floor(diffInMs / msInMonth);
+      diffInMs %= msInMonth;
+
+      const days = Math.floor(diffInMs / msInDay);
+      diffInMs %= msInDay;
+
+      const hours = Math.floor(diffInMs / msInHour);
+      diffInMs %= msInHour;
+
+      const minutes = Math.floor(diffInMs / msInMinute);
+      diffInMs %= msInMinute;
+
+      const seconds = Math.floor(diffInMs / msInSecond);
+
+      // Display the results in the table
+      document.getElementById('years').textContent = years;
+      document.getElementById('months').textContent = months;
+      document.getElementById('days').textContent = days;
+      document.getElementById('hours').textContent = hours;
+      document.getElementById('minutes').textContent = minutes;
+      document.getElementById('seconds').textContent = seconds;
+    });
+  </script>
+</body>
+</html>
